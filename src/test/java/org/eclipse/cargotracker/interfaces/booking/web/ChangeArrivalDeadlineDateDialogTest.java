@@ -52,6 +52,14 @@ public class ChangeArrivalDeadlineDateDialogTest {
         assertEquals("", primeFaces.closeResult);
     }
 
+    @Test
+    public void testHandleReturnIsANoOpAndDoesNotThrow() {
+        dialog.handleReturn(null);
+
+        assertNull(primeFaces.closeResult);
+        assertNull(primeFaces.openedOutcome);
+    }
+
     private static class DialogPrimeFaces extends PrimeFaces {
         private String openedOutcome;
         private Map<String, Object> openedOptions;
