@@ -61,7 +61,7 @@ public class ChangeArrivalDeadlineDateTest {
 
         assertEquals("DEF789", facade.changedTrackingId);
         assertSame(selectedDate, facade.changedDate);
-        assertEquals(1, facade.changeCalls);
+        assertEquals(1, facade.changeAttempts);
         assertEquals("DONE", primeFaces.closeResult);
     }
 
@@ -75,6 +75,8 @@ public class ChangeArrivalDeadlineDateTest {
             fail("Malformed deadline must not be silently accepted");
         } catch (IllegalStateException expected) {
             assertTrue(expected.getMessage().contains("DEF789"));
+            assertTrue(expected.getMessage().contains("not a date"));
+            assertTrue(expected.getMessage().contains("MM/dd/yyyy"));
         }
         assertNull(editor.getArrivalDeadlineDate());
     }
@@ -117,7 +119,7 @@ public class ChangeArrivalDeadlineDateTest {
         } catch (IllegalArgumentException expected) {
             assertTrue(expected.getMessage().contains("deadline"));
         }
-        assertEquals(0, facade.changeCalls);
+        assertEquals(0, facade.changeAttempts);
         assertNull(primeFaces.closeResult);
     }
 
@@ -133,6 +135,7 @@ public class ChangeArrivalDeadlineDateTest {
         } catch (IllegalStateException expected) {
             assertSame(facade.failure, expected);
         }
+        assertEquals(1, facade.changeAttempts);
         assertNull(primeFaces.closeResult);
     }
 
@@ -165,7 +168,7 @@ public class ChangeArrivalDeadlineDateTest {
         private String loadedTrackingId;
         private String changedTrackingId;
         private Date changedDate;
-        private int changeCalls;
+        private int changeAttempts;
         private RuntimeException failure;
 
         @Override
@@ -176,7 +179,7 @@ public class ChangeArrivalDeadlineDateTest {
 
         @Override
         public void changeDeadline(String trackingId, Date arrivalDeadline) {
-            changeCalls++;
+            changeAttempts++;
             if (failure != null) {
                 throw failure;
             }

@@ -54,7 +54,8 @@ public class ChangeArrivalDeadlineDate implements Serializable {
         ParsePosition position = new ParsePosition(0);
         Date parsed = date == null ? null : format.parse(date, position);
         if (parsed == null || position.getIndex() != date.length()) {
-            throw new IllegalStateException("Invalid arrival deadline date for cargo " + trackingId);
+            throw new IllegalStateException("Invalid arrival deadline date '" + date
+                    + "' for cargo " + trackingId + " (expected MM/dd/yyyy)");
         }
         arrivalDeadlineDate = parsed;
     }
