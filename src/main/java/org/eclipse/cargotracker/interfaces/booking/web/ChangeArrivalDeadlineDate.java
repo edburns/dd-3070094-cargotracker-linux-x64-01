@@ -17,6 +17,7 @@ import java.util.Date;
 public class ChangeArrivalDeadlineDate implements Serializable {
 
     private static final long serialVersionUID = 1L;
+    private static final String DATE_PATTERN = "MM/dd/yyyy";
 
     private String trackingId;
     private CargoRoute cargo;
@@ -49,13 +50,13 @@ public class ChangeArrivalDeadlineDate implements Serializable {
         cargo = bookingServiceFacade.loadCargoForRouting(trackingId);
         arrivalDeadlineDate = null;
         String date = cargo.getArrivalDeadlineDate();
-        SimpleDateFormat format = new SimpleDateFormat("MM/dd/yyyy");
+        SimpleDateFormat format = new SimpleDateFormat(DATE_PATTERN);
         format.setLenient(false);
         ParsePosition position = new ParsePosition(0);
         Date parsed = date == null ? null : format.parse(date, position);
         if (parsed == null || position.getIndex() != date.length()) {
             throw new IllegalStateException("Invalid arrival deadline date '" + date
-                    + "' for cargo " + trackingId + " (expected MM/dd/yyyy)");
+                    + "' for cargo " + trackingId + " (expected " + DATE_PATTERN + ")");
         }
         arrivalDeadlineDate = parsed;
     }
