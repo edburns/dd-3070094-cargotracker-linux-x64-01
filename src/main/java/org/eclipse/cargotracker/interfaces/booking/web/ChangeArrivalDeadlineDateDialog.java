@@ -33,6 +33,8 @@ public class ChangeArrivalDeadlineDateDialog implements Serializable {
         PrimeFaces.current().dialog().openDynamic("/admin/dialogs/changeArrivalDeadlineDate.xhtml", options, params);
     }
 
+    // Table refresh on dialog return is handled by the caller's ajax "update"
+    // attribute (see listNotRouted.xhtml), matching ChangeDestinationDialog.
     public void handleReturn(SelectEvent event) {  }
 
     public void cancel() {
